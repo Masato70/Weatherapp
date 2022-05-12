@@ -29,11 +29,11 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        locationinformation()
+        locationDialog()
 
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
-                tastBackground()
+                getCurrentLocation()
             }
         }
     }
@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun locationinformation() {
+    private fun locationDialog() {
         //パーミッションの状態確認
 
         //位置情報許可されている
@@ -72,10 +72,32 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun tastBackground() {
-        //緯度経度取
+    private fun getCurrentLocation() {
+        //緯度経度取得
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return
+        }
+        fusedLocationClient.lastLocation.addOnSuccessListener {
+            val latitude: String = it.latitude.toString()
+            binding.text.setText(latitude)
 
-        Log.d(TAG , "通過")
+        }
+
 
     }
 }
