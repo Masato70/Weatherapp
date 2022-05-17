@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id("com.google.secrets_gradle_plugin") version "0.5"
 }
 
 android {
@@ -32,6 +33,10 @@ android {
     viewBinding {
         enabled = true
     }
+
+    secrets {
+        propertiesFileName = "local.properties"
+    }
 }
 
 dependencies {
@@ -48,4 +53,6 @@ dependencies {
     //コルーチン
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1")
+
+
 }

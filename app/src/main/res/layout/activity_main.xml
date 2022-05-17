@@ -11,13 +11,13 @@
     <LinearLayout
         android:id="@+id/First_weather"
         android:layout_width="match_parent"
-        android:background="@drawable/border"
         android:layout_height="150dp"
         android:layout_margin="20dp"
+        android:background="@drawable/border"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:id="@+id/First_weather_item"
@@ -32,7 +32,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="時"
-                android:textSize="10dp"/>
+                android:textSize="10dp" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -40,7 +40,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="天気"
-                android:textSize="10dp"/>
+                android:textSize="10dp" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -48,7 +48,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="降水"
-                android:textSize="10dp"/>
+                android:textSize="10dp" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -56,15 +56,15 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="気温"
-                android:textSize="10dp"/>
+                android:textSize="10dp" />
 
         </LinearLayout>
 
         <View
             android:id="@+id/view_line"
             android:layout_width="2dp"
-            android:background="@color/gray"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:background="@color/gray" />
 
         <HorizontalScrollView
             android:id="@+id/First_weather_view"
@@ -986,24 +986,11 @@
                 </LinearLayout>
 
 
-
             </LinearLayout>
 
 
         </HorizontalScrollView>
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="50sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
