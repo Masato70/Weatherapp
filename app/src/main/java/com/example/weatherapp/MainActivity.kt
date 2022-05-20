@@ -65,7 +65,6 @@ class MainActivity : AppCompatActivity() {
             weatherBackgroundTask()
 //            weatherJsonTask()
         }
-
     }
 
     private suspend fun weatherBackgroundTask() {
