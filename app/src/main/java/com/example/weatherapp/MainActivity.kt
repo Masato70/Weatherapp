@@ -4,6 +4,7 @@ package com.example.weatherapp
 import android.Manifest
 import android.content.ContentValues.TAG
 import android.content.pm.PackageManager
+import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -14,12 +15,16 @@ import androidx.lifecycle.lifecycleScope
 import com.example.weatherapp.databinding.ActivityMainBinding
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.tasks.Task
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONException
+import org.json.JSONObject
+import java.io.BufferedReader
 import java.io.IOError
 import java.io.IOException
+import java.io.InputStreamReader
 import java.net.URL
 
 
@@ -35,30 +40,7 @@ class MainActivity : AppCompatActivity() {
 
         locationDialog()
 
-        lifecycleScope.launch {
-            withContext(Dispatchers.IO) {
-            }
-        }
     }
-
-//    override fun onRequestPermissionsResult(
-//
-//
-//        requestCode: Int,
-//        permissions: Array<out String>,
-//        grantResults: IntArray
-//    ) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-//
-//        if (requestCode == 100) {
-//            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                Toast.makeText(this, "位置情報にアクセスを許可されました", Toast.LENGTH_SHORT).show()
-//
-//            } else {
-//                Toast.makeText(this, "設定から位置情報にアクセスを許可してください", Toast.LENGTH_SHORT).show()
-//            }
-//        }
-//    }
 
 
     private fun locationDialog() {
@@ -67,10 +49,7 @@ class MainActivity : AppCompatActivity() {
         //位置情報許可されている
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             Log.d(TAG, "位置情報許可されています")
-
-            lifecycleScope.launch {
-                weatherBackgroundTask()
-            }
+            weatherTask()
 
         //位置情報許可されていない
         } else {
@@ -80,6 +59,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun weatherTask() {
+
+        lifecycleScope.launch {
+            weatherBackgroundTask()
+            weatherJsonTask()
+        }
+
+    }
 
     private suspend fun weatherBackgroundTask() {
         //緯度経度取得
@@ -88,20 +75,10 @@ class MainActivity : AppCompatActivity() {
                 this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return
         }
-        val response = withContext(Dispatchers.IO) {
-            fusedLocationClient.lastLocation.addOnSuccessListener {
-                val latitude: String = it.latitude.toString()
-                val longitude: String = it.longitude.toString()
-                val apiURL = "https://api.openweathermap.org/data/2.5/onecall?lat= + ${latitude} + &lon= + ${longitude} + &exclude={part}&appid="
+        withContext(Dispatchers.IO) {
 
-                try {
-                    val urlObj = URL(apiURL)
-
-                } catch (e:IOException) {e.printStackTrace()
-                } catch (e:JSONException) {e.printStackTrace()}
-
-            }
         }
-
     }
+
+
 }
