@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             weatherBackgroundTask()
-            weatherJsonTask()
+//            weatherJsonTask()
         }
 
     }
