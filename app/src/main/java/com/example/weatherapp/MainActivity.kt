@@ -3,6 +3,7 @@ package com.example.weatherapp
 
 import android.Manifest
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
@@ -62,22 +63,39 @@ class MainActivity : AppCompatActivity() {
     private fun weatherTask() {
 
         lifecycleScope.launch {
-            weatherBackgroundTask()
-//            weatherJsonTask()
+            val result =weatherBackgroundTask()
+            weatherJsonTask(result)
         }
     }
 
     private suspend fun weatherBackgroundTask() {
         //緯度経度取得
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return
-        }
-        withContext(Dispatchers.IO) {
+        val response = withContext(Dispatchers.IO) {
+            if (ActivityCompat.checkSelfPermission(this@MainActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return@withContext
+            }
+            fusedLocationClient.lastLocation.addOnSuccessListener {
+                val latitude :String = it.latitude.toString()
+                val longitude :String = it.longitude.toString()
+                val apiURL = "https://api.openweathermap.org/data/2.5/onecall?lat=$latitude&lon=$longitude&exclude=alerts,daily&appid="
+                var http = ""
 
+                try {
+                    val urlObj = URL(apiURL)
+                    val br = BufferedReader(InputStreamReader(urlObj.openStream()))
+                    http = br.readText()
+                }catch (e:IOException){e.printStackTrace()
+                }catch (e:JSONException){e.printStackTrace()}
+                return@addOnSuccessListener
+            }
         }
+        return response
     }
 
+    private fun weatherJsonTask(reslt: String) {
+
+        val jsonObj = JSONObject(reslt)
+
+    }
 
 }
