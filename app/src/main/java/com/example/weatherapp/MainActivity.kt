@@ -64,14 +64,14 @@ class MainActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             val result =weatherBackgroundTask()
-            weatherJsonTask(result)
+            weatherJsonTask(result.toString())
         }
     }
 
     private suspend fun weatherBackgroundTask(){
         //緯度経度取得
         val response = withContext(Dispatchers.IO) {
-            if (ActivityCompat.checkSelfPermission(this@MainActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.checkSelfPermission(this@MainActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this@MainActivity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 return@withContext
             }
 
@@ -97,7 +97,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun weatherJsonTask(reslt: String) {
 
+        //jsonを取得
         val jsonObj = JSONObject(reslt)
+
 
     }
 
