@@ -68,12 +68,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private suspend fun weatherBackgroundTask() {
+    private suspend fun weatherBackgroundTask(){
         //緯度経度取得
         val response = withContext(Dispatchers.IO) {
             if (ActivityCompat.checkSelfPermission(this@MainActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 return@withContext
             }
+
+
             fusedLocationClient.lastLocation.addOnSuccessListener {
                 val latitude :String = it.latitude.toString()
                 val longitude :String = it.longitude.toString()
@@ -84,10 +86,11 @@ class MainActivity : AppCompatActivity() {
                     val urlObj = URL(apiURL)
                     val br = BufferedReader(InputStreamReader(urlObj.openStream()))
                     http = br.readText()
+
                 }catch (e:IOException){e.printStackTrace()
                 }catch (e:JSONException){e.printStackTrace()}
-                return@addOnSuccessListener
             }
+            return@withContext
         }
         return response
     }
